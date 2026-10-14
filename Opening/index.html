@@ -6,7 +6,7 @@
   <title>Welcome to My Website</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -19,132 +19,148 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #0b0f19;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #fcfbf7;
+      font-family: 'Playfair Display', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
       overflow: hidden;
       position: relative;
+      color: #2e302d;
     }
 
-    /* 背景のオーロラグロー効果 */
-    .bg-blobs {
+    /* 木漏れ日のような柔らかな光のアニメーション */
+    .sunlight-container {
       position: absolute;
       inset: 0;
       overflow: hidden;
       z-index: 0;
-      filter: blur(80px);
-      opacity: 0.65;
+      filter: blur(75px);
+      opacity: 0.75;
       pointer-events: none;
     }
 
-    .blob {
+    .light-orb {
       position: absolute;
       border-radius: 50%;
-      animation: float 14s infinite ease-in-out alternate;
+      animation: drift 16s infinite ease-in-out alternate;
     }
 
-    .blob-1 {
+    /* 淡いセージグリーン */
+    .orb-1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, #e2eedc 0%, rgba(226, 238, 220, 0) 70%);
+      top: 10%;
+      left: 15%;
+      animation-duration: 18s;
+    }
+
+    /* 温かみのあるペールアプリコット */
+    .orb-2 {
       width: 480px;
       height: 480px;
-      background: linear-gradient(135deg, #6366f1, #3b82f6);
-      top: 15%;
-      left: 20%;
-      animation-duration: 16s;
-    }
-
-    .blob-2 {
-      width: 420px;
-      height: 420px;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      bottom: 15%;
-      right: 20%;
-      animation-duration: 18s;
+      background: radial-gradient(circle, #faead9 0%, rgba(250, 234, 217, 0) 70%);
+      bottom: 12%;
+      right: 15%;
+      animation-duration: 20s;
       animation-direction: alternate-reverse;
     }
 
-    .blob-3 {
-      width: 350px;
-      height: 350px;
-      background: linear-gradient(135deg, #06b6d4, #3b82f6);
-      top: 50%;
-      left: 50%;
+    /* 柔らかなペールハニー */
+    .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #f3f5ea 0%, rgba(243, 245, 234, 0) 70%);
+      top: 48%;
+      left: 48%;
       transform: translate(-50%, -50%);
-      animation-duration: 12s;
+      animation-duration: 14s;
     }
 
-    @keyframes float {
+    @keyframes drift {
       0% {
         transform: translate(0, 0) scale(1);
       }
       50% {
-        transform: translate(30px, -40px) scale(1.08);
+        transform: translate(25px, -30px) scale(1.06);
       }
       100% {
-        transform: translate(-20px, 30px) scale(0.95);
+        transform: translate(-20px, 25px) scale(0.96);
       }
     }
 
-    /* グラスモーフィズムカード */
+    /* ナチュラルなグラスカード */
     .container {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 3.5rem 5rem;
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.035);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      animation: fadeInScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      padding: 4.2rem 5.5rem;
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 25px 50px -12px rgba(92, 85, 75, 0.08),
+                  0 0 0 1px rgba(215, 210, 200, 0.25);
+      animation: calmFadeIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      max-width: 90vw;
     }
 
-    /* タイトルテキスト */
+    /* 繊細なアクセントライン */
+    .decor-line {
+      display: inline-block;
+      width: 36px;
+      height: 1px;
+      background-color: #8c9288;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    /* メインタイトル */
     .title {
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      line-height: 1.2;
-      background: linear-gradient(135deg, #ffffff 10%, #e2e8f0 50%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      color: #2d302a;
       user-select: none;
     }
 
-    @keyframes fadeInScale {
+    @keyframes calmFadeIn {
       from {
         opacity: 0;
-        transform: translateY(24px) scale(0.95);
+        transform: translateY(18px);
       }
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
     /* レスポンシブ対応 */
     @media (max-width: 640px) {
       .container {
-        padding: 2.2rem 2rem;
-        margin: 1.5rem;
-        border-radius: 20px;
+        padding: 2.8rem 2rem;
+        margin: 1.2rem;
+        border-radius: 24px;
+      }
+
+      .decor-line {
+        margin-bottom: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- 背景の環境光アニメーション -->
-  <div class="bg-blobs" aria-hidden="true">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+  <!-- 木漏れ日のようなやさしい光 -->
+  <div class="sunlight-container" aria-hidden="true">
+    <div class="light-orb orb-1"></div>
+    <div class="light-orb orb-2"></div>
+    <div class="light-orb orb-3"></div>
   </div>
 
-  <!-- メインコンテンツ -->
+  <!-- メインメッセージ -->
   <main class="container">
+    <div class="decor-line" aria-hidden="true"></div>
     <h1 class="title">Welcome to My Website</h1>
   </main>
 </body>
 </html>
-
