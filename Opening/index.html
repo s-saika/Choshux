@@ -43,7 +43,6 @@
       overflow: hidden;
       position: relative;
       color: var(--text-main);
-      perspective: 1200px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -214,8 +213,6 @@
       position: relative;
       z-index: 2;
       padding: 1.5rem;
-      transform-style: preserve-3d;
-      will-change: transform;
     }
 
     .glass-card {
@@ -481,7 +478,7 @@
   <div class="corner-meta corner-bl">Scroll or Click to Enter</div>
   <div class="corner-meta corner-br">Est. 2026 / Studio</div>
 
-  <!-- メインステージ（3Dチルト効果） -->
+  <!-- メインステージ -->
   <div class="stage-wrapper" id="stageWrapper">
     <main class="glass-card" id="glassCard">
       <!-- 上部ステータスバッジ -->
@@ -528,8 +525,7 @@
     updateClock();
     setInterval(updateClock, 1000 * 30);
 
-    // ─── 2. マウス追従グロー & 3Dパララックスチルト ───
-    const stage = document.getElementById('stageWrapper');
+    // ─── 2. マウス追従グロー ───
     const card = document.getElementById('glassCard');
     const glow = document.getElementById('cursorGlow');
 
@@ -537,10 +533,6 @@
     let mouseY = window.innerHeight / 2;
     let currentX = mouseX;
     let currentY = mouseY;
-    let tiltX = 0;
-    let tiltY = 0;
-    let currentTiltX = 0;
-    let currentTiltY = 0;
     let isHovering = false;
 
     // タッチ端末判定
@@ -554,21 +546,11 @@
           isHovering = true;
           glow.style.opacity = '1';
         }
-
-        // 画面中央基準の正規化 (-1 〜 1)
-        const normX = (e.clientX / window.innerWidth) - 0.5;
-        const normY = (e.clientY / window.innerHeight) - 0.5;
-
-        // 最大チルト角度（控えめで上質な傾き）
-        tiltX = -normY * 6.5;
-        tiltY = normX * 6.5;
       });
 
       window.addEventListener('mouseleave', () => {
         isHovering = false;
         glow.style.opacity = '0';
-        tiltX = 0;
-        tiltY = 0;
       });
 
       function renderFrame() {
@@ -577,14 +559,6 @@
         currentY += (mouseY - currentY) * 0.12;
         glow.style.left = `${currentX}px`;
         glow.style.top = `${currentY}px`;
-
-        // 3Dチルトの補間イージング
-        currentTiltX += (tiltX - currentTiltX) * 0.08;
-        currentTiltY += (tiltY - currentTiltY) * 0.08;
-
-        if (stage) {
-          stage.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
-        }
 
         requestAnimationFrame(renderFrame);
       }
