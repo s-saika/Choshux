@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to My Website</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <style>
+    :root {
+      --bg-canvas: #faf8f5;
+      --card-bg: rgba(255, 255, 255, 0.65);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --text-main: #1f2320;
+      --text-sub: #5f665e;
+      --text-muted: #8e958d;
+      --accent-sage: #53735a;
+      --accent-sage-soft: #e2eedc;
+      --accent-peach: #faead9;
+      --accent-gold: #f4edd4;
+      --shadow-ambient: 0 30px 60px -15px rgba(70, 65, 55, 0.07),
+        0 12px 28px -10px rgba(70, 65, 55, 0.05),
+        0 0 0 1px rgba(225, 220, 210, 0.5);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -19,148 +38,576 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #fcfbf7;
-      font-family: 'Playfair Display', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+      background-color: var(--bg-canvas);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       overflow: hidden;
       position: relative;
-      color: #2e302d;
+      color: var(--text-main);
+      perspective: 1200px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* 木漏れ日のような柔らかな光のアニメーション */
-    .sunlight-container {
-      position: absolute;
+    /* ─── 上質なペーパーテクスチャ（フィルムグレイン） ─── */
+    .grain-layer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ─── 木漏れ日のような柔らかな光のアニメーション ─── */
+    .sunlight-canvas {
+      position: fixed;
       inset: 0;
       overflow: hidden;
       z-index: 0;
-      filter: blur(75px);
-      opacity: 0.75;
+      filter: blur(85px);
+      opacity: 0.85;
       pointer-events: none;
     }
 
     .light-orb {
       position: absolute;
       border-radius: 50%;
-      animation: drift 16s infinite ease-in-out alternate;
+      will-change: transform;
+      animation: drift 20s infinite ease-in-out alternate;
     }
 
-    /* 淡いセージグリーン */
+    /* セージグリーン */
     .orb-1 {
-      width: 520px;
-      height: 520px;
-      background: radial-gradient(circle, #e2eedc 0%, rgba(226, 238, 220, 0) 70%);
-      top: 10%;
-      left: 15%;
-      animation-duration: 18s;
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, var(--accent-sage-soft) 0%, rgba(226, 238, 220, 0) 70%);
+      top: 6%;
+      left: 12%;
+      animation-duration: 24s;
     }
 
-    /* 温かみのあるペールアプリコット */
+    /* ペールアプリコット */
     .orb-2 {
-      width: 480px;
-      height: 480px;
-      background: radial-gradient(circle, #faead9 0%, rgba(250, 234, 217, 0) 70%);
-      bottom: 12%;
-      right: 15%;
-      animation-duration: 20s;
+      width: 540px;
+      height: 540px;
+      background: radial-gradient(circle, var(--accent-peach) 0%, rgba(250, 234, 217, 0) 70%);
+      bottom: 8%;
+      right: 12%;
+      animation-duration: 28s;
       animation-direction: alternate-reverse;
     }
 
-    /* 柔らかなペールハニー */
+    /* 柔らかなサンゴールド */
     .orb-3 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, #f3f5ea 0%, rgba(243, 245, 234, 0) 70%);
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, var(--accent-gold) 0%, rgba(244, 237, 212, 0) 70%);
       top: 48%;
       left: 48%;
       transform: translate(-50%, -50%);
-      animation-duration: 14s;
+      animation-duration: 18s;
+    }
+
+    /* マウス追従用のソフトグロー */
+    .cursor-glow {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 252, 240, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      filter: blur(50px);
+      transition: opacity 0.6s ease;
+      opacity: 0;
     }
 
     @keyframes drift {
       0% {
         transform: translate(0, 0) scale(1);
       }
+
       50% {
-        transform: translate(25px, -30px) scale(1.06);
+        transform: translate(35px, -30px) scale(1.07);
       }
+
       100% {
-        transform: translate(-20px, 25px) scale(0.96);
+        transform: translate(-30px, 35px) scale(0.95);
       }
     }
 
-    /* ナチュラルなグラスカード */
-    .container {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 4.2rem 5.5rem;
-      border-radius: 32px;
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 25px 50px -12px rgba(92, 85, 75, 0.08),
-                  0 0 0 1px rgba(215, 210, 200, 0.25);
-      animation: calmFadeIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      max-width: 90vw;
-    }
-
-    /* 繊細なアクセントライン */
-    .decor-line {
-      display: inline-block;
-      width: 36px;
-      height: 1px;
-      background-color: #8c9288;
-      margin-bottom: 1.5rem;
-      opacity: 0.6;
-    }
-
-    /* メインタイトル */
-    .title {
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
+    /* ─── 四隅のエディトリアル装飾 ─── */
+    .corner-meta {
+      position: fixed;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      z-index: 2;
+      user-select: none;
+      pointer-events: none;
       font-weight: 500;
-      letter-spacing: 0.02em;
-      line-height: 1.25;
-      color: #2d302a;
+      opacity: 0;
+      animation: cornerFade 1.6s cubic-bezier(0.2, 0.9, 0.3, 1) 0.6s forwards;
+    }
+
+    .corner-tl {
+      top: 2.4rem;
+      left: 2.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .corner-tr {
+      top: 2.4rem;
+      right: 2.8rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .corner-bl {
+      bottom: 2.4rem;
+      left: 2.8rem;
+    }
+
+    .corner-br {
+      bottom: 2.4rem;
+      right: 2.8rem;
+    }
+
+    .corner-tl::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent-sage);
+      box-shadow: 0 0 0 3px rgba(83, 115, 90, 0.2);
+      animation: pulseDot 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+
+      50% {
+        transform: scale(1.35);
+        opacity: 1;
+      }
+    }
+
+    @keyframes cornerFade {
+      to {
+        opacity: 0.85;
+      }
+    }
+
+    /* ─── メイン・グラスモーフィズムカード ─── */
+    .stage-wrapper {
+      position: relative;
+      z-index: 2;
+      padding: 1.5rem;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .glass-card {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      padding: 4.8rem 4.5rem;
+      text-align: center;
+      border-radius: 36px;
+      background: var(--card-bg);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-ambient),
+        inset 0 1px 1px rgba(255, 255, 255, 0.95),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.02);
+      animation: cardEntrance 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      overflow: hidden;
+      transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    /* 上部のハイライト・リム */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18%;
+      right: 18%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 1), transparent);
+    }
+
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(32px) scale(0.96);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ─── バッジ & アクセント ─── */
+    .curated-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.38rem 1rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(220, 215, 205, 0.55);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 2.2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) 0.2s both;
+    }
+
+    .badge-symbol {
+      font-size: 0.65rem;
+      color: var(--accent-sage);
+    }
+
+    /* ─── メインタイトル ─── */
+    .title-area {
+      margin-bottom: 1.6rem;
+      animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) 0.35s both;
+    }
+
+    .title-intro {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--text-sub);
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    .title-main {
+      display: block;
+      font-family: 'Playfair Display', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+      font-size: clamp(2.4rem, 5.8vw, 4.2rem);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--text-main);
       user-select: none;
     }
 
-    @keyframes calmFadeIn {
+    /* ─── サブテキスト ─── */
+    .lead-text {
+      font-size: clamp(0.92rem, 1.8vw, 1.02rem);
+      line-height: 1.8;
+      font-weight: 300;
+      color: var(--text-sub);
+      max-width: 460px;
+      margin: 0 auto 2.8rem;
+      letter-spacing: 0.01em;
+      animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) 0.5s both;
+    }
+
+    /* ─── インタラクティブ・アクションボタン ─── */
+    .action-container {
+      animation: fadeInUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) 0.65s both;
+    }
+
+    .explore-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.95rem 2.4rem;
+      border-radius: 999px;
+      background: var(--text-main);
+      color: #faf8f5;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      box-shadow: 0 10px 24px -5px rgba(31, 35, 32, 0.28);
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .explore-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .explore-btn .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .explore-btn .btn-arrow svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .explore-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px -6px rgba(31, 35, 32, 0.38);
+      background: #121513;
+    }
+
+    .explore-btn:hover::before {
+      opacity: 1;
+    }
+
+    .explore-btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    .explore-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px -3px rgba(31, 35, 32, 0.3);
+    }
+
+    /* ─── 汎用アニメーション ─── */
+    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* レスポンシブ対応 */
-    @media (max-width: 640px) {
-      .container {
-        padding: 2.8rem 2rem;
-        margin: 1.2rem;
-        border-radius: 24px;
+    /* ─── レスポンシブ対応 ─── */
+    @media (max-width: 768px) {
+      .corner-meta {
+        font-size: 0.68rem;
       }
 
-      .decor-line {
-        margin-bottom: 1.2rem;
+      .corner-tl,
+      .corner-tr {
+        top: 1.6rem;
+      }
+
+      .corner-bl,
+      .corner-br {
+        bottom: 1.6rem;
+      }
+
+      .corner-tl,
+      .corner-bl {
+        left: 1.8rem;
+      }
+
+      .corner-tr,
+      .corner-br {
+        right: 1.8rem;
+      }
+
+      .corner-bl {
+        display: none;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .glass-card {
+        padding: 3.4rem 2.2rem;
+        border-radius: 28px;
+        margin: 1rem;
+      }
+
+      .curated-badge {
+        margin-bottom: 1.6rem;
+      }
+
+      .lead-text {
+        margin-bottom: 2.2rem;
+      }
+
+      .corner-br {
+        display: none;
       }
     }
   </style>
 </head>
+
 <body>
+  <!-- 上質なペーパーテクスチャ（グレイン） -->
+  <div class="grain-layer" aria-hidden="true"></div>
+
   <!-- 木漏れ日のようなやさしい光 -->
-  <div class="sunlight-container" aria-hidden="true">
+  <div class="sunlight-canvas" aria-hidden="true">
     <div class="light-orb orb-1"></div>
     <div class="light-orb orb-2"></div>
     <div class="light-orb orb-3"></div>
   </div>
 
-  <!-- メインメッセージ -->
-  <main class="container">
-    <div class="decor-line" aria-hidden="true"></div>
-    <h1 class="title">Welcome to My Website</h1>
-  </main>
+  <!-- マウス追従グロー -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- 四隅のエディトリアル装飾 -->
+  <div class="corner-meta corner-tl">Portfolio &amp; Journal</div>
+  <div class="corner-meta corner-tr" id="liveTime">Online</div>
+  <div class="corner-meta corner-bl">Scroll or Click to Enter</div>
+  <div class="corner-meta corner-br">Est. 2026 / Studio</div>
+
+  <!-- メインステージ（3Dチルト効果） -->
+  <div class="stage-wrapper" id="stageWrapper">
+    <main class="glass-card" id="glassCard">
+      <!-- 上部ステータスバッジ -->
+      <div class="curated-badge">
+        <span class="badge-symbol">✦</span>
+        <span>Curated Sanctuary</span>
+      </div>
+
+      <!-- メイン見出し -->
+      <header class="title-area">
+        <span class="title-intro">Welcome to</span>
+        <h1 class="title-main">My Website</h1>
+      </header>
+
+      <!-- サブテキスト -->
+      <p class="lead-text">
+        思考と創作が心地よく響きあう、静謐なデジタルアトリエへようこそ。
+      </p>
+
+      <!-- インタラクティブボタン -->
+      <div class="action-container">
+        <a href="#enter" class="explore-btn" id="exploreBtn">
+          <span>Enter Space</span>
+          <span class="btn-arrow" aria-hidden="true">
+            <svg viewBox="0 0 16 16">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ─── 1. リアルタイムクロック（エディトリアル表示） ───
+    function updateClock() {
+      const timeEl = document.getElementById('liveTime');
+      if (!timeEl) return;
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      timeEl.textContent = `Tokyo · ${hours}:${minutes}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000 * 30);
+
+    // ─── 2. マウス追従グロー & 3Dパララックスチルト ───
+    const stage = document.getElementById('stageWrapper');
+    const card = document.getElementById('glassCard');
+    const glow = document.getElementById('cursorGlow');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    let tiltX = 0;
+    let tiltY = 0;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
+    let isHovering = false;
+
+    // タッチ端末判定
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+    if (!isTouch) {
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isHovering) {
+          isHovering = true;
+          glow.style.opacity = '1';
+        }
+
+        // 画面中央基準の正規化 (-1 〜 1)
+        const normX = (e.clientX / window.innerWidth) - 0.5;
+        const normY = (e.clientY / window.innerHeight) - 0.5;
+
+        // 最大チルト角度（控えめで上質な傾き）
+        tiltX = -normY * 6.5;
+        tiltY = normX * 6.5;
+      });
+
+      window.addEventListener('mouseleave', () => {
+        isHovering = false;
+        glow.style.opacity = '0';
+        tiltX = 0;
+        tiltY = 0;
+      });
+
+      function renderFrame() {
+        // カーソル追従の補間イージング
+        currentX += (mouseX - currentX) * 0.12;
+        currentY += (mouseY - currentY) * 0.12;
+        glow.style.left = `${currentX}px`;
+        glow.style.top = `${currentY}px`;
+
+        // 3Dチルトの補間イージング
+        currentTiltX += (tiltX - currentTiltX) * 0.08;
+        currentTiltY += (tiltY - currentTiltY) * 0.08;
+
+        if (stage) {
+          stage.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+        }
+
+        requestAnimationFrame(renderFrame);
+      }
+      requestAnimationFrame(renderFrame);
+    }
+
+    // ─── 3. 入場ボタンクリック時のスムーズトランジション ───
+    const exploreBtn = document.getElementById('exploreBtn');
+    if (exploreBtn) {
+      exploreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        card.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease';
+        card.style.transform = 'scale(0.96) translateY(-12px)';
+        card.style.opacity = '0';
+
+        setTimeout(() => {
+          // 次のコンテンツへの遷移（将来的に遷移先URLを設定可能）
+          card.style.transform = 'scale(1) translateY(0)';
+          card.style.opacity = '1';
+        }, 1200);
+      });
+    }
+  </script>
 </body>
+
 </html>
